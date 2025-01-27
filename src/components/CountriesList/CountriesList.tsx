@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { getCountriesData } from "../../services/CountriesServices";
+import { getCountriesData } from "../../services/CountriesService";
 import CountryCard from "../CountryCard/CountryCard";
 
 export interface ICountry {
