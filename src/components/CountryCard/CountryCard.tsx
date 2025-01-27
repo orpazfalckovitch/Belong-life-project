@@ -7,11 +7,12 @@ interface Props {
     name: string;
     flag: string;
   };
+  onClick: (country: any) => void;
 }
 
-export function CountryCard({ country }: Props) {
+export function CountryCard({ country, onClick }: Props) {
   return (
-    <div className="country-container" key={country.id}>
+    <div className="country-container" key={country.id} onClick={onClick}>
       <div className="flag-container">
         <img className="flag" src={country.flag} alt={`${country.name} flag`} />
       </div>

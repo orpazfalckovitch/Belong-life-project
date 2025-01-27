@@ -2,6 +2,7 @@ import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { vi, describe, expect } from "vitest";
 import { of } from "rxjs";
+import { MemoryRouter } from "react-router-dom";
 import CountriesList from "../src/components/CountriesList/CountriesList";
 import { getCountriesData } from "../src/services/CountriesService";
 import "@testing-library/jest-dom";
@@ -22,10 +23,24 @@ describe("CountriesList", () => {
     vi.resetAllMocks();
   });
 
-  it("should render 'There is no country' text", async () => {
+  it("should render loading text", async () => {
     (getCountriesData as jest.Mock).mockReturnValue(of());
+    render(
+      <MemoryRouter>
+        <CountriesList />
+      </MemoryRouter>
+    );
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
 
-    render(<CountriesList />);
+  it("should render 'There is no country' text", async () => {
+    (getCountriesData as jest.Mock).mockReturnValue(of([]));
+
+    render(
+      <MemoryRouter>
+        <CountriesList />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(screen.getByText("There is no country")).toBeInTheDocument();
@@ -45,7 +60,11 @@ describe("CountriesList", () => {
   it("should render countries list", async () => {
     (getCountriesData as jest.Mock).mockReturnValue(of(mockCountriesData));
 
-    render(<CountriesList />);
+    render(
+      <MemoryRouter>
+        <CountriesList />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(screen.getByText("Israel")).toBeInTheDocument();
@@ -55,7 +74,11 @@ describe("CountriesList", () => {
   it("should filter countries list", async () => {
     (getCountriesData as jest.Mock).mockReturnValue(of(mockCountriesData));
 
-    render(<CountriesList />);
+    render(
+      <MemoryRouter>
+        <CountriesList />
+      </MemoryRouter>
+    );
     const searchInput = screen.getByPlaceholderText("Search country");
     fireEvent.change(searchInput, { target: { value: mockSearchInput } });
 

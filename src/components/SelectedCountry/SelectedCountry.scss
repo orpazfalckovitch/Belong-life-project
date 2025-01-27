@@ -1,0 +1,12 @@
+.back {
+  color: blue;
+  margin: 10px;
+  width: 170px;
+  cursor: pointer;
+}
+.selected-country {
+  margin: 40px;
+  .flag {
+    width: 200px;
+  }
+}

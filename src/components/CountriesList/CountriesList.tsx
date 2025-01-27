@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { getCountriesData } from "../../services/CountriesService";
 import CountryCard from "../CountryCard/CountryCard";
 import Search from "../Search/Search";
+import "./CountriesList.scss";
 
 export interface ICountry {
   id: string;
@@ -15,15 +16,19 @@ export function CountriesList() {
     useState<any>("Loading...");
   const [countriesList, setCountriesList] = useState<ICountry[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const subscription = getCountriesData().subscribe(
       (response: any) => {
         setCountriesList(response);
         setOriginalCountriesList(response);
+        setLoading(false);
       },
       () => {
         setError("Failed to fetch data from the server");
+        setLoading(false);
       }
     );
 
@@ -49,19 +54,35 @@ export function CountriesList() {
     }
   };
 
+  //navigate to selected country screen
+  const handleCountryClick = (country: ICountry) => {
+    navigate(`/country/${country.id}`, { state: { country } });
+  };
+
   return (
     <div>
-      <Search onKeyUp={searchClicked}></Search>
-      {Array.isArray(countriesList) && countriesList.length ? (
-        <ul>
-          {countriesList.map((country: any) => (
-            <CountryCard key={country.id} country={country}></CountryCard>
-          ))}
-        </ul>
+      {loading ? (
+        <h1 className="no-countries">Loading...</h1>
+      ) : Array.isArray(countriesList) && countriesList.length ? (
+        <>
+          <Search onKeyUp={searchClicked} />
+          <ul>
+            {countriesList.map((country: any) => (
+              <CountryCard
+                onClick={() => handleCountryClick(country)}
+                key={country.id}
+                country={country}
+              />
+            ))}
+          </ul>
+        </>
       ) : error ? (
         <div>{error}</div>
       ) : (
-        <div>There is no country</div>
+        <>
+          <Search onKeyUp={searchClicked} />
+          <h1 className="no-countries">There is no country</h1>
+        </>
       )}
     </div>
   );
