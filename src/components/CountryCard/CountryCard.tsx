@@ -9,7 +9,7 @@ interface Props {
   };
 }
 
-function CountryCard({ country }: Props) {
+export function CountryCard({ country }: Props) {
   return (
     <div className="country-container" key={country.id}>
       <div className="flag-container">
