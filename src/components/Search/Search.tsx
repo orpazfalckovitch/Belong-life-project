@@ -16,7 +16,7 @@ function Search({ onKeyUp }: Props) {
       <input
         type="text"
         name="search"
-        placeholder="Search country"
+        placeholder="Search by country name"
         onKeyUp={handleKeyUp}
       />
     </div>

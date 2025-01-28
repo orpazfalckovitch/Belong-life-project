@@ -7,7 +7,7 @@ import "@testing-library/jest-dom";
 describe("Search", () => {
   it("Should render search input", () => {
     render(<Search onKeyUp={() => {}} />);
-    const searchInput = screen.getByPlaceholderText("Search country");
+    const searchInput = screen.getByPlaceholderText("Search by country name");
     expect(searchInput).toBeInTheDocument();
   });
 });

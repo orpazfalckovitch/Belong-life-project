@@ -4,12 +4,7 @@ import { getCountriesData } from "../../services/CountriesService";
 import CountryCard from "../CountryCard/CountryCard";
 import Search from "../Search/Search";
 import "./CountriesList.scss";
-
-export interface ICountry {
-  id: string;
-  name: string;
-  flag: string;
-}
+import { ICountry } from "../../models/Country.interface";
 
 export function CountriesList() {
   const [originalCountriesList, setOriginalCountriesList] =
@@ -62,11 +57,13 @@ export function CountriesList() {
   return (
     <div>
       {loading ? (
-        <h1 className="no-countries">Loading...</h1>
+        <h1>
+          <div className="loading">Loading</div>
+        </h1>
       ) : Array.isArray(countriesList) && countriesList.length ? (
         <>
           <Search onKeyUp={searchClicked} />
-          <ul>
+          <div className="countries-list">
             {countriesList.map((country: any) => (
               <CountryCard
                 onClick={() => handleCountryClick(country)}
@@ -74,14 +71,14 @@ export function CountriesList() {
                 country={country}
               />
             ))}
-          </ul>
+          </div>
         </>
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
           <Search onKeyUp={searchClicked} />
-          <h1 className="no-countries">There is no country</h1>
+          <h1 className="no-countries">Country not exists</h1>
         </>
       )}
     </div>

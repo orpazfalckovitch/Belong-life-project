@@ -1,8 +1,13 @@
 .country-container {
+  margin-bottom: 15px;
   display: flex;
   padding: 10px;
   border: 1px solid #ccc;
   cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
 
   .flag-container {
     width: 300px;

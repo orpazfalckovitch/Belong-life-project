@@ -3,6 +3,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { vi, describe, expect } from "vitest";
 import { of } from "rxjs";
 import { MemoryRouter } from "react-router-dom";
+
+import SelectedCountry from "../src/components/SelectedCountry/SelectedCountry";
 import CountriesList from "../src/components/CountriesList/CountriesList";
 import { getCountriesData } from "../src/services/CountriesService";
 import "@testing-library/jest-dom";
@@ -30,10 +32,10 @@ describe("CountriesList", () => {
         <CountriesList />
       </MemoryRouter>
     );
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
-  it("should render 'There is no country' text", async () => {
+  it("should render 'Country not exists' text", async () => {
     (getCountriesData as jest.Mock).mockReturnValue(of([]));
 
     render(
@@ -43,7 +45,7 @@ describe("CountriesList", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("There is no country")).toBeInTheDocument();
+      expect(screen.getByText("Country not exists")).toBeInTheDocument();
     });
   });
 
@@ -79,7 +81,7 @@ describe("CountriesList", () => {
         <CountriesList />
       </MemoryRouter>
     );
-    const searchInput = screen.getByPlaceholderText("Search country");
+    const searchInput = screen.getByPlaceholderText("Search by country name");
     fireEvent.change(searchInput, { target: { value: mockSearchInput } });
 
     await waitFor(() => {
