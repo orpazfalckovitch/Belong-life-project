@@ -13,6 +13,11 @@ const mockCountriesData = [
   { id: "IL", name: "Israel", flag: "src/assets/flags/israel.svg" },
   { id: "HU", name: "Hungary", flag: "src/assets/flags/hungary.svg" },
 ];
+const mockCountry = {
+  id: "IL",
+  name: "Israel",
+  flag: "src/assets/flags/israel.svg",
+};
 const mockSearchInput = "Israel";
 const mockError = new Error("Failed to fetch data from the server");
 
@@ -86,6 +91,36 @@ describe("CountriesList", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Israel")).toBeInTheDocument();
+    });
+  });
+
+  it("should navigate to selected country", async () => {
+    (getCountriesData as jest.Mock).mockReturnValue(of(mockCountriesData));
+
+    render(
+      <MemoryRouter>
+        <CountriesList />
+      </MemoryRouter>
+    );
+
+    const countryLink = screen.getByText("Israel");
+    fireEvent.click(countryLink);
+
+    expect(screen.getByText("Israel")).toBeInTheDocument();
+  });
+
+  it("should navigate to selected country with no data", async () => {
+    (getCountriesData as jest.Mock).mockReturnValue(of());
+
+    render(
+      <MemoryRouter initialEntries={["/country/US"]}>
+        <SelectedCountry />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      const selectedCountry = screen.getByText("No country data available");
+      expect(selectedCountry).toBeInTheDocument();
     });
   });
 });
